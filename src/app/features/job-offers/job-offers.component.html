@@ -1,1 +1,155 @@
-<p>job-offers works!</p>
+<div class="job-offers-container">
+  <!-- Header -->
+  <div class="page-header">
+    <div class="header-content">
+      <h1 class="page-title">
+        <i class="fas fa-briefcase"></i>
+        Offres d'Emploi
+      </h1>
+      <p class="page-subtitle">Gérez et consultez toutes les offres d'emploi disponibles</p>
+    </div>
+    <button class="btn-add">
+      <i class="fas fa-plus"></i>
+      Nouvelle Offre
+    </button>
+  </div>
+
+  <!-- Stats Cards -->
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-icon active">
+        <i class="fas fa-check-circle"></i>
+      </div>
+      <div class="stat-info">
+        <h3>{{ (jobOffers | filter:'active').length }}</h3>
+        <p>Offres Actives</p>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon total">
+        <i class="fas fa-briefcase"></i>
+      </div>
+      <div class="stat-info">
+        <h3>{{ jobOffers.length }}</h3>
+        <p>Total Offres</p>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon applicants">
+        <i class="fas fa-users"></i>
+      </div>
+      <div class="stat-info">
+        <h3>{{ getTotalApplicants() }}</h3>
+        <p>Candidatures</p>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon closed">
+        <i class="fas fa-times-circle"></i>
+      </div>
+      <div class="stat-info">
+        <h3>{{ (jobOffers | filter:'closed').length }}</h3>
+        <p>Offres Fermées</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Job Offers List -->
+  <div class="job-offers-list">
+    <div class="job-card" *ngFor="let job of jobOffers">
+      <!-- Card Header -->
+      <div class="job-card-header">
+        <div class="job-main-info">
+          <div class="company-logo">
+            <i class="fas fa-building"></i>
+          </div>
+          <div class="job-title-section">
+            <h3 class="job-title">{{ job.title }}</h3>
+            <p class="company-name">
+              <i class="fas fa-building"></i>
+              {{ job.company }}
+            </p>
+          </div>
+        </div>
+        <span class="job-status" [ngClass]="getStatusClass(job.status)">
+          {{ getStatusText(job.status) }}
+        </span>
+      </div>
+
+      <!-- Card Body -->
+      <div class="job-card-body">
+        <p class="job-description">{{ job.description }}</p>
+
+        <!-- Job Details -->
+        <div class="job-details">
+          <div class="detail-item">
+            <i class="fas fa-map-marker-alt"></i>
+            <span>{{ job.location }}</span>
+          </div>
+          <div class="detail-item">
+            <i class="fas fa-clock"></i>
+            <span>{{ job.type }}</span>
+          </div>
+          <div class="detail-item">
+            <i class="fas fa-money-bill-wave"></i>
+            <span>{{ job.salary }}</span>
+          </div>
+          <div class="detail-item">
+            <i class="fas fa-calendar"></i>
+            <span>Publié le {{ job.postedDate | date:'dd/MM/yyyy' }}</span>
+          </div>
+        </div>
+
+        <!-- Requirements -->
+        <div class="requirements-section">
+          <h4 class="requirements-title">
+            <i class="fas fa-list-check"></i>
+            Compétences Requises
+          </h4>
+          <div class="requirements-tags">
+            <span class="tag" *ngFor="let req of job.requirements">{{ req }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card Footer -->
+      <div class="job-card-footer">
+        <div class="footer-info">
+          <span class="applicants-count">
+            <i class="fas fa-user-group"></i>
+            {{ job.applicants }} candidatures
+          </span>
+          <span class="deadline">
+            <i class="fas fa-hourglass-end"></i>
+            Date limite: {{ job.deadline | date:'dd/MM/yyyy' }}
+          </span>
+        </div>
+        <div class="footer-actions">
+          <button class="btn-action btn-view">
+            <i class="fas fa-eye"></i>
+            Voir
+          </button>
+          <button class="btn-action btn-edit">
+            <i class="fas fa-edit"></i>
+            Modifier
+          </button>
+          <button class="btn-action btn-delete">
+            <i class="fas fa-trash"></i>
+            Supprimer
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Empty State -->
+  <div class="empty-state" *ngIf="jobOffers.length === 0">
+    <i class="fas fa-briefcase"></i>
+    <h3>Aucune offre d'emploi</h3>
+    <p>Commencez par créer votre première offre d'emploi</p>
+    <button class="btn-add">
+      <i class="fas fa-plus"></i>
+      Créer une Offre
+    </button>
+  </div>
+</div>
